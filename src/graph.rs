@@ -56,12 +56,10 @@ impl GraphBuilder {
         for ((v1, v2), label) in self.edges.iter() {
             edges[*v1][*v2] = Some(*label);
         }
-        let buffer = vec![vec![None; self.vertex_count]; self.vertex_count];
         MatGraph {
             vertex_count: self.vertex_count,
             edges,
             edge_steps: 1,
-            buffer
         }
     }
 }

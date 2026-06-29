@@ -6,7 +6,6 @@ pub struct MatGraph {
     pub vertex_count: usize,
     pub edges: Vec<Vec<Option<EdgeLabel>>>,
     pub edge_steps: usize,
-    pub buffer: Vec<Vec<Option<EdgeLabel>>>
 }
 
 impl Graph for MatGraph {
@@ -32,7 +31,6 @@ impl Graph for MatGraph {
                 }
             }
         }
-        (self.edges, self.buffer) = (self.buffer, self.edges);
         self.contains_odd_dominated_loop()
     }
 }
@@ -46,7 +44,7 @@ impl MatGraph {
                 value = self.max_odd(value, branch);
             }
         }
-        self.buffer[v1][v2] = value;
+        self.edges[v1][v2] = value;
         value
     }
 }
