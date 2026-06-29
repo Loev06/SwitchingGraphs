@@ -9,7 +9,7 @@ fn main() -> anyhow::Result<()> {
         .add_edge(2, 2, 2)?
         .add_edge(2, 3, 5)?
         .add_edge(3, 0, 2)?
-        .build_adj();
+        .build_mat();
 
     println!("{}", graph);
     println!("{}", graph.contains_odd_dominated_loop());

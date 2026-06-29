@@ -24,27 +24,19 @@ impl Graph for AdjGraph {
 impl AdjGraph {
     fn dfs(&self, cur: usize, target: usize, visited: &mut Vec<bool>) -> Option<EdgeLabel> {
         visited[cur] = true;
-        let mut value = 0;
+        let mut value = None;
         for (next, label) in self.edges[cur].iter() {
             if *next == target {
                 return Some(*label);
             }
             if !visited[*next]
             {
-                let dfs = self.dfs(*next, target, visited).map_or(0, EdgeLabel::get);
-                let branch = dfs.max(label.get());
+                let dfs = self.dfs(*next, target, visited);
+                let branch = dfs.max(Some(*label));
                 value = self.max_odd(value, branch)
             }
         }
-        EdgeLabel::new(value)
-    }
-
-    fn max_odd(&self, a: u8, b: u8) -> u8 {
-        match (a % 2 == 1, b % 2 == 1) {
-            (true, true) | (false, false) => a.max(b),
-            (true, false) => a,
-            (false, true) => b,
-        }
+        value
     }
 }
 

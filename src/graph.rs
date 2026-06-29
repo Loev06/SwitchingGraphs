@@ -11,6 +11,15 @@ type EdgeLabel = NonZeroU8;
 
 pub trait Graph {
     fn contains_odd_dominated_loop(self) -> bool;
+    fn max_odd(&self, a: Option<EdgeLabel>, b: Option<EdgeLabel>) -> Option<EdgeLabel> {
+        match [a, b].map(|x|
+            x.is_some_and(|l| l.get() % 2 == 1))
+         {
+            [true, true] | [false, false] => a.max(b),
+            [true, false] => a,
+            [false, true] => b,
+        }
+    }
 }
 
 pub struct GraphBuilder {
@@ -47,9 +56,12 @@ impl GraphBuilder {
         for ((v1, v2), label) in self.edges.iter() {
             edges[*v1][*v2] = Some(*label);
         }
+        let buffer = vec![vec![None; self.vertex_count]; self.vertex_count];
         MatGraph {
             vertex_count: self.vertex_count,
-            edges
+            edges,
+            edge_steps: 1,
+            buffer
         }
     }
 }
